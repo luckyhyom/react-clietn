@@ -7,11 +7,12 @@ import TweetService from './service/tweet';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AuthErrorEventBus } from './context/AuthContext';
-
+import http from './network/http';
 const baseURL = process.env.REACT_APP_BASE_URL;
+const clientHttp = new http(baseURL);
 const authErrorEventBus = new AuthErrorEventBus();
 const authService = new AuthService();
-const tweetService = new TweetService(baseURL);
+const tweetService = new TweetService(clientHttp);
 
 ReactDOM.render(
   <React.StrictMode>

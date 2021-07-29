@@ -4,16 +4,16 @@ export default class TweetService {
   }
 
   async getTweets(username) {
-    let query = username ? `?username=${username}` : '';
+    const query = username ? `?username=${username}` : '';
     return this.http.fetch(`/tweets${query}`, {
       method: 'GET',
     });
   }
 
   async postTweet(text) {
-    return this.http.fetch(`/tweets/`, {
+    return this.http.fetch(`/tweets`, {
       method: 'POST',
-      body: JSON.stringify({ text, username: 'ellie', name: 'Ellie',}),
+      body: JSON.stringify({ text, username: 'ellie', name: 'Ellie' }),
     });
   }
 
