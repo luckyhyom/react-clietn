@@ -1,5 +1,3 @@
-// 함수를 만드는 것과 클래스를 만드는 것의 차이는?
-// -> 클래스로 만들면 재사용이 가능하다.
 export default class TweetService {
   tweets = [
     {
@@ -12,15 +10,11 @@ export default class TweetService {
     },
   ];
 
-  constructor() {
-    this.baseURL = 'http://127.0.0.1:8080';
-  }
-
   async getTweets(username) {
     
     const result = username
-      ? fetch(this.baseURL+`?username=${username}`,{method:'GET'}).then(res=>res.json())
-      : fetch(this.baseURL+`/tweets`,{method:'GET'}).then(res=>res.json());
+      ? fetch(`http://127.0.0.1:8080/tweets?username=${username}`,{method:'GET'}).then(res=>res.json())
+      : fetch(`http://127.0.0.1:8080/tweets`,{method:'GET',headers:{'Content-Type':'application/json'}}).then(res=>res.json());
     
       return result;
   }
@@ -34,28 +28,32 @@ export default class TweetService {
       text,
     }
 
-    let test = fetch(this.baseURL+`/tweets`,{method:'POST',body: JSON.stringify(tweet)})
+    let test = fetch(`http://127.0.0.1:8080/tweets`,{method:'POST',headers:{'Content-Type':'application/json'},body: JSON.stringify(tweet)})
     .then(res=>res.json());
+
+    console.log(test);
 
     return tweet;
   }
 
   async deleteTweet(tweetId) {
-    fetch(this.baseURL+`/tweets/${tweetId}`,{method:'DELETE'}).then(res=>res.json())
+    fetch(`http://127.0.0.1:8080/tweets/${tweetId}`,{method:'DELETE'}).then(res=>res.json())
   }
 
   async updateTweet(tweetId, text) {
-    const tweet = await fetch(this.baseURL+`/tweets/${tweetId}`,{method:'GET'}).then(res=>res.json());
+    const tweet = await fetch(`http://127.0.0.1:8080/tweets/${tweetId}`,{method:'GET'}).then(res=>res.json());
     if (!tweet) {
       throw new Error('tweet not found!');
     }
     tweet.text = text;
-    let test = await fetch(this.baseURL+`/tweets/${tweetId}`,
+    let test = await fetch(`http://127.0.0.1:8080/tweets/${tweetId}`,
       {
         method:'PUT',
+        headers:{'Content-Type':'apllication/json'},
         body:JSON.stringify({tweet})
       }
     )
+    .then(res=>res.json());
 
     return tweet;
   }
